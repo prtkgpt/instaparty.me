@@ -26,6 +26,8 @@ create index if not exists potluck_items_party_id_idx on potluck_items(party_id)
 -- RLS Policies for potluck_items
 alter table potluck_items enable row level security;
 
+-- Drop existing policies if they exist, then recreate them
+drop policy if exists "Potluck items for public parties are viewable by everyone" on potluck_items;
 create policy "Potluck items for public parties are viewable by everyone"
   on potluck_items for select
   using (
@@ -36,6 +38,7 @@ create policy "Potluck items for public parties are viewable by everyone"
     )
   );
 
+drop policy if exists "Party owners can view potluck items for their parties" on potluck_items;
 create policy "Party owners can view potluck items for their parties"
   on potluck_items for select
   using (
@@ -46,14 +49,17 @@ create policy "Party owners can view potluck items for their parties"
     )
   );
 
+drop policy if exists "Anyone can create potluck items" on potluck_items;
 create policy "Anyone can create potluck items"
   on potluck_items for insert
   with check (true);
 
+drop policy if exists "Anyone can update potluck items" on potluck_items;
 create policy "Anyone can update potluck items"
   on potluck_items for update
   using (true);
 
+drop policy if exists "Party owners can delete potluck items from their parties" on potluck_items;
 create policy "Party owners can delete potluck items from their parties"
   on potluck_items for delete
   using (
