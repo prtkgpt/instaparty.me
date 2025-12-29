@@ -8,6 +8,7 @@ import RSVPList from '@/components/RSVPList'
 import PartyComments from '@/components/PartyComments'
 import DeletePartyButton from '@/components/DeletePartyButton'
 import PotluckList from '@/components/PotluckList'
+import CohostManagement from '@/components/CohostManagement'
 
 export default async function PartyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -26,7 +27,22 @@ export default async function PartyPage({ params }: { params: Promise<{ slug: st
 
   const isOwner = user?.id === party.user_id
 
-  if (!party.is_public && !isOwner) {
+  // Check if user is a cohost
+  let isCohost = false
+  if (user && !isOwner) {
+    const { data: cohostData } = await supabase
+      .from('party_cohosts')
+      .select('id')
+      .eq('party_id', party.id)
+      .eq('user_id', user.id)
+      .single()
+
+    isCohost = !!cohostData
+  }
+
+  const canManage = isOwner || isCohost
+
+  if (!party.is_public && !canManage) {
     redirect('/login')
   }
 
@@ -65,17 +81,22 @@ export default async function PartyPage({ params }: { params: Promise<{ slug: st
                 )}
               </div>
               <div className="flex items-center space-x-3">
+                {canManage && (
+                  <Link
+                    href={`/party/${slug}/edit`}
+                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors flex items-center space-x-2"
+                  >
+                    <span>✏️</span>
+                    <span>Edit</span>
+                  </Link>
+                )}
                 {isOwner && (
-                  <>
-                    <Link
-                      href={`/party/${slug}/edit`}
-                      className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors flex items-center space-x-2"
-                    >
-                      <span>✏️</span>
-                      <span>Edit</span>
-                    </Link>
-                    <DeletePartyButton partyId={party.id} partyTitle={party.title} />
-                  </>
+                  <DeletePartyButton partyId={party.id} partyTitle={party.title} />
+                )}
+                {isCohost && (
+                  <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-semibold rounded">
+                    Co-host
+                  </span>
                 )}
                 {party.is_public && (
                   <span className="px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded">
@@ -116,7 +137,7 @@ export default async function PartyPage({ params }: { params: Promise<{ slug: st
               )}
             </div>
 
-            {isOwner && (
+            {canManage && (
               <PartyActions
                 partyId={party.id}
                 inviteUrl={inviteUrl}
@@ -125,7 +146,7 @@ export default async function PartyPage({ params }: { params: Promise<{ slug: st
             )}
           </div>
 
-          {isOwner && (
+          {canManage && (
             <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">RSVPs</h2>
@@ -146,15 +167,22 @@ export default async function PartyPage({ params }: { params: Promise<{ slug: st
             </div>
           )}
 
+          {/* Co-host Management - Only for party owner */}
+          {isOwner && (
+            <div className="mb-6">
+              <CohostManagement partyId={party.id} isOwner={isOwner} />
+            </div>
+          )}
+
           {/* Potluck section - visible if enabled */}
           {party.has_potluck && (
             <div className="mb-6">
-              <PotluckList partyId={party.id} isOwner={isOwner} />
+              <PotluckList partyId={party.id} isOwner={canManage} />
             </div>
           )}
 
           {/* Comments section - visible to everyone */}
-          <PartyComments partyId={party.id} isOwner={isOwner} />
+          <PartyComments partyId={party.id} isOwner={canManage} />
         </div>
       </div>
     </div>

@@ -24,18 +24,39 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Get party details
+    // Get party details and check if user is owner or cohost
     const { data: party, error: partyError } = await supabase
       .from('parties')
       .select('*')
       .eq('id', partyId)
-      .eq('user_id', user.id)
       .single()
 
     if (partyError || !party) {
       return NextResponse.json(
-        { error: 'Party not found or access denied' },
+        { error: 'Party not found' },
         { status: 404 }
+      )
+    }
+
+    // Check if user is owner or cohost
+    const isOwner = party.user_id === user.id
+    let isCohost = false
+
+    if (!isOwner) {
+      const { data: cohostData } = await supabase
+        .from('party_cohosts')
+        .select('id')
+        .eq('party_id', partyId)
+        .eq('user_id', user.id)
+        .single()
+
+      isCohost = !!cohostData
+    }
+
+    if (!isOwner && !isCohost) {
+      return NextResponse.json(
+        { error: 'Access denied' },
+        { status: 403 }
       )
     }
 

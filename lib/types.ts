@@ -59,6 +59,15 @@ export interface PotluckItem {
   notes: string | null
 }
 
+export interface PartyCohost {
+  id: string
+  created_at: string
+  party_id: string
+  user_id: string
+  invited_by: string
+  profiles?: Profile
+}
+
 export interface PartyWithInvites extends Party {
   invites?: Invite[]
   profiles?: Profile

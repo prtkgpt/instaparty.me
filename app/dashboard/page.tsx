@@ -12,11 +12,28 @@ export default async function DashboardPage() {
     redirect('/login')
   }
 
-  const { data: parties } = await supabase
+  // Get parties owned by user
+  const { data: ownedParties } = await supabase
     .from('parties')
     .select('*')
     .eq('user_id', user.id)
     .order('date', { ascending: true })
+
+  // Get parties where user is a cohost
+  const { data: cohostParties } = await supabase
+    .from('party_cohosts')
+    .select('*, parties(*)')
+    .eq('user_id', user.id)
+
+  // Combine and sort all parties
+  const cohostPartiesData = cohostParties?.map(ch => ({
+    ...(ch.parties as any),
+    isCohost: true
+  })) || []
+
+  const allParties = [...(ownedParties || []), ...cohostPartiesData].sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  )
 
   const { data: profile } = await supabase
     .from('profiles')
@@ -60,7 +77,7 @@ export default async function DashboardPage() {
           </Link>
         </div>
 
-        {!parties || parties.length === 0 ? (
+        {!allParties || allParties.length === 0 ? (
           <div className="text-center py-16">
             <div className="text-6xl mb-4">🎈</div>
             <h2 className="text-2xl font-semibold text-gray-700 mb-2">
@@ -78,7 +95,7 @@ export default async function DashboardPage() {
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {parties.map((party: Party) => (
+            {allParties.map((party: any) => (
               <Link
                 key={party.id}
                 href={`/party/${party.slug}`}
@@ -88,11 +105,18 @@ export default async function DashboardPage() {
                   <h3 className="text-xl font-bold text-gray-900">
                     {party.title}
                   </h3>
-                  {party.is_public && (
-                    <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded">
-                      Public
-                    </span>
-                  )}
+                  <div className="flex flex-col gap-1">
+                    {party.isCohost && (
+                      <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded">
+                        Co-host
+                      </span>
+                    )}
+                    {party.is_public && (
+                      <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded">
+                        Public
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <p className="text-gray-600 mb-4 line-clamp-2">
                   {party.description}
