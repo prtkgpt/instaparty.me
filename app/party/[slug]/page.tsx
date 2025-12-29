@@ -5,6 +5,7 @@ import { format } from 'date-fns'
 import { Invite, RSVPStatus } from '@/lib/types'
 import PartyActions from '@/components/PartyActions'
 import RSVPList from '@/components/RSVPList'
+import PartyComments from '@/components/PartyComments'
 
 export default async function PartyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -109,7 +110,7 @@ export default async function PartyPage({ params }: { params: Promise<{ slug: st
           </div>
 
           {isOwner && (
-            <div className="bg-white rounded-xl shadow-sm p-8">
+            <div className="bg-white rounded-xl shadow-sm p-8 mb-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">RSVPs</h2>
                 <div className="flex space-x-4 text-sm">
@@ -128,6 +129,9 @@ export default async function PartyPage({ params }: { params: Promise<{ slug: st
               <RSVPList invites={invites || []} />
             </div>
           )}
+
+          {/* Comments section - visible to everyone */}
+          <PartyComments partyId={party.id} isOwner={isOwner} />
         </div>
       </div>
     </div>

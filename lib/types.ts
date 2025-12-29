@@ -37,6 +37,15 @@ export interface Profile {
   avatar_url: string | null
 }
 
+export interface PartyComment {
+  id: string
+  created_at: string
+  party_id: string
+  name: string
+  message: string
+  is_approved: boolean
+}
+
 export interface PartyWithInvites extends Party {
   invites?: Invite[]
   profiles?: Profile
