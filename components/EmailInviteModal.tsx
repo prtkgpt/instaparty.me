@@ -111,7 +111,7 @@ export default function EmailInviteModal({ partyId, onClose }: EmailInviteModalP
                   value={emails}
                   onChange={(e) => setEmails(e.target.value)}
                   rows={6}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900"
                   placeholder="Enter email addresses (one per line or comma-separated)&#10;&#10;example@email.com&#10;friend@email.com&#10;family@email.com"
                 />
                 <p className="mt-2 text-sm text-gray-500">
