@@ -6,6 +6,7 @@ import { Invite, RSVPStatus } from '@/lib/types'
 import PartyActions from '@/components/PartyActions'
 import RSVPList from '@/components/RSVPList'
 import PartyComments from '@/components/PartyComments'
+import DeletePartyButton from '@/components/DeletePartyButton'
 
 export default async function PartyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -64,13 +65,16 @@ export default async function PartyPage({ params }: { params: Promise<{ slug: st
               </div>
               <div className="flex items-center space-x-3">
                 {isOwner && (
-                  <Link
-                    href={`/party/${slug}/edit`}
-                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors flex items-center space-x-2"
-                  >
-                    <span>✏️</span>
-                    <span>Edit</span>
-                  </Link>
+                  <>
+                    <Link
+                      href={`/party/${slug}/edit`}
+                      className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors flex items-center space-x-2"
+                    >
+                      <span>✏️</span>
+                      <span>Edit</span>
+                    </Link>
+                    <DeletePartyButton partyId={party.id} partyTitle={party.title} />
+                  </>
                 )}
                 {party.is_public && (
                   <span className="px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded">
