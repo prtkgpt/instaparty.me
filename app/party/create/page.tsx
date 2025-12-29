@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { generateSlug } from '@/lib/utils'
+import { partyThemes } from '@/lib/themes'
 
 export default function CreatePartyPage() {
   const [title, setTitle] = useState('')
@@ -14,6 +15,7 @@ export default function CreatePartyPage() {
   const [location, setLocation] = useState('')
   const [maxGuests, setMaxGuests] = useState('')
   const [isPublic, setIsPublic] = useState(true)
+  const [theme, setTheme] = useState('classic')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -47,6 +49,7 @@ export default function CreatePartyPage() {
           slug,
           max_guests: maxGuests ? parseInt(maxGuests) : null,
           is_public: isPublic,
+          theme,
         })
         .select()
         .single()
@@ -171,6 +174,30 @@ export default function CreatePartyPage() {
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900"
                 placeholder="Leave empty for unlimited"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Party Theme
+              </label>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {Object.values(partyThemes).map((t) => (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => setTheme(t.id)}
+                    className={`p-4 border-2 rounded-lg text-left transition-all ${
+                      theme === t.id
+                        ? 'border-purple-600 bg-purple-50'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="text-2xl mb-1">{t.emoji}</div>
+                    <div className="font-semibold text-sm text-gray-900">{t.name}</div>
+                    <div className="text-xs text-gray-500 mt-1">{t.description}</div>
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="flex items-center">

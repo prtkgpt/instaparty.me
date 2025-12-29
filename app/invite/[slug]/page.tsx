@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { Party, RSVPStatus } from '@/lib/types'
 import { format } from 'date-fns'
+import { getTheme } from '@/lib/themes'
 
 export default function InvitePage() {
   const params = useParams()
@@ -23,6 +24,8 @@ export default function InvitePage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+
+  const theme = party ? getTheme(party.theme) : getTheme('classic')
 
   useEffect(() => {
     async function loadParty() {
@@ -95,9 +98,9 @@ export default function InvitePage() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-500 to-pink-500 px-4">
+      <div className={`min-h-screen flex items-center justify-center bg-gradient-to-br ${theme.colors.gradient} px-4`}>
         <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
-          <div className="text-6xl mb-4">🎉</div>
+          <div className="text-6xl mb-4">{party?.theme ? getTheme(party.theme).emoji : '🎉'}</div>
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Thanks for your RSVP!</h2>
           <p className="text-gray-600 mb-6">
             {status === 'yes' && "We're excited to see you at the party!"}
@@ -106,7 +109,8 @@ export default function InvitePage() {
           </p>
           <Link
             href="/"
-            className="inline-block px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition-colors"
+            className="inline-block px-6 py-3 text-white rounded-lg font-semibold transition-colors"
+            style={{ backgroundColor: theme.colors.primary }}
           >
             Back to Home
           </Link>
@@ -116,11 +120,11 @@ export default function InvitePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-500 to-pink-500 px-4 py-8">
+    <div className={`min-h-screen bg-gradient-to-br ${theme.colors.gradient} px-4 py-8`}>
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
           <Link href="/" className="inline-block text-2xl font-bold text-white mb-4">
-            🎉 InstaParty
+            {theme.emoji} InstaParty
           </Link>
         </div>
 
@@ -265,7 +269,8 @@ export default function InvitePage() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-3 px-6 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 disabled:bg-purple-300 transition-colors"
+              className="w-full py-3 px-6 text-white rounded-lg font-semibold transition-colors disabled:opacity-50"
+              style={{ backgroundColor: theme.colors.primary }}
             >
               {submitting ? 'Submitting...' : 'Submit RSVP'}
             </button>

@@ -11,6 +11,7 @@ export interface Party {
   slug: string
   max_guests: number | null
   is_public: boolean
+  theme: string
 }
 
 export type RSVPStatus = 'pending' | 'yes' | 'no' | 'maybe'
