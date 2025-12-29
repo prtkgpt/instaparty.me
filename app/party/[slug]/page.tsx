@@ -62,11 +62,22 @@ export default async function PartyPage({ params }: { params: Promise<{ slug: st
                   <p className="text-lg text-gray-600">{party.description}</p>
                 )}
               </div>
-              {party.is_public && (
-                <span className="px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded">
-                  Public
-                </span>
-              )}
+              <div className="flex items-center space-x-3">
+                {isOwner && (
+                  <Link
+                    href={`/party/${slug}/edit`}
+                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors flex items-center space-x-2"
+                  >
+                    <span>✏️</span>
+                    <span>Edit</span>
+                  </Link>
+                )}
+                {party.is_public && (
+                  <span className="px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded">
+                    Public
+                  </span>
+                )}
+              </div>
             </div>
 
             <div className="space-y-4 mb-8">
