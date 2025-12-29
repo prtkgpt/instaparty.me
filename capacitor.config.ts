@@ -5,12 +5,12 @@ const config: CapacitorConfig = {
   appName: 'InstaParty',
   webDir: 'public',
   server: {
-    // For development: uncomment below to use local dev server
+    // Production URL - loads your live website
+    url: 'https://www.instaparty.me',
+
+    // For local development, comment the line above and uncomment below:
     // url: 'http://localhost:3000',
     // cleartext: true,
-
-    // For production: deploy to Vercel and update URL here
-    // url: 'https://your-app.vercel.app',
 
     androidScheme: 'https',
     iosScheme: 'https'
