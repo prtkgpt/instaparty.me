@@ -12,6 +12,7 @@ export interface Party {
   max_guests: number | null
   is_public: boolean
   theme: string
+  has_potluck: boolean
 }
 
 export type RSVPStatus = 'pending' | 'yes' | 'no' | 'maybe'
@@ -44,6 +45,18 @@ export interface PartyComment {
   name: string
   message: string
   is_approved: boolean
+}
+
+export interface PotluckItem {
+  id: string
+  created_at: string
+  party_id: string
+  item_name: string
+  category: string | null
+  claimed_by_name: string | null
+  claimed_by_email: string | null
+  quantity: number
+  notes: string | null
 }
 
 export interface PartyWithInvites extends Party {

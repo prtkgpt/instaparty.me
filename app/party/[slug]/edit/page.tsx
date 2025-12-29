@@ -22,6 +22,7 @@ export default function EditPartyPage() {
   const [location, setLocation] = useState('')
   const [maxGuests, setMaxGuests] = useState('')
   const [isPublic, setIsPublic] = useState(true)
+  const [hasPotluck, setHasPotluck] = useState(false)
   const [theme, setTheme] = useState('classic')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
@@ -62,6 +63,7 @@ export default function EditPartyPage() {
       setLocation(partyData.location || '')
       setMaxGuests(partyData.max_guests?.toString() || '')
       setIsPublic(partyData.is_public)
+      setHasPotluck(partyData.has_potluck || false)
       setTheme(partyData.theme || 'classic')
       setLoading(false)
     }
@@ -92,6 +94,7 @@ export default function EditPartyPage() {
           location,
           max_guests: maxGuests ? parseInt(maxGuests) : null,
           is_public: isPublic,
+          has_potluck: hasPotluck,
           theme,
         })
         .eq('id', party.id)
@@ -250,17 +253,32 @@ export default function EditPartyPage() {
               </div>
             </div>
 
-            <div className="flex items-center">
-              <input
-                id="isPublic"
-                type="checkbox"
-                checked={isPublic}
-                onChange={(e) => setIsPublic(e.target.checked)}
-                className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
-              />
-              <label htmlFor="isPublic" className="ml-2 block text-sm text-gray-700">
-                Make this party public (anyone with the link can view and RSVP)
-              </label>
+            <div className="space-y-3">
+              <div className="flex items-center">
+                <input
+                  id="isPublic"
+                  type="checkbox"
+                  checked={isPublic}
+                  onChange={(e) => setIsPublic(e.target.checked)}
+                  className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                />
+                <label htmlFor="isPublic" className="ml-2 block text-sm text-gray-700">
+                  Make this party public (anyone with the link can view and RSVP)
+                </label>
+              </div>
+
+              <div className="flex items-center">
+                <input
+                  id="hasPotluck"
+                  type="checkbox"
+                  checked={hasPotluck}
+                  onChange={(e) => setHasPotluck(e.target.checked)}
+                  className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                />
+                <label htmlFor="hasPotluck" className="ml-2 block text-sm text-gray-700">
+                  Enable Potluck (guests can sign up to bring items)
+                </label>
+              </div>
             </div>
 
             <div className="flex space-x-4">

@@ -7,6 +7,7 @@ import PartyActions from '@/components/PartyActions'
 import RSVPList from '@/components/RSVPList'
 import PartyComments from '@/components/PartyComments'
 import DeletePartyButton from '@/components/DeletePartyButton'
+import PotluckList from '@/components/PotluckList'
 
 export default async function PartyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -142,6 +143,13 @@ export default async function PartyPage({ params }: { params: Promise<{ slug: st
               </div>
 
               <RSVPList invites={invites || []} />
+            </div>
+          )}
+
+          {/* Potluck section - visible if enabled */}
+          {party.has_potluck && (
+            <div className="mb-6">
+              <PotluckList partyId={party.id} isOwner={isOwner} />
             </div>
           )}
 

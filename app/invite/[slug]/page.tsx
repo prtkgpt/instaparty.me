@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Party, RSVPStatus } from '@/lib/types'
 import { format } from 'date-fns'
 import { getTheme } from '@/lib/themes'
+import PotluckList from '@/components/PotluckList'
 
 export default function InvitePage() {
   const params = useParams()
@@ -276,6 +277,11 @@ export default function InvitePage() {
             </button>
           </form>
         </div>
+
+        {/* Potluck section - visible if enabled */}
+        {party.has_potluck && (
+          <PotluckList partyId={party.id} isOwner={false} />
+        )}
       </div>
     </div>
   )
