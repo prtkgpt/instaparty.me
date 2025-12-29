@@ -3,7 +3,7 @@ import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { Invite, RSVPStatus } from '@/lib/types'
-import ShareButton from '@/components/ShareButton'
+import PartyActions from '@/components/PartyActions'
 import RSVPList from '@/components/RSVPList'
 
 export default async function PartyPage({ params }: { params: Promise<{ slug: string }> }) {
