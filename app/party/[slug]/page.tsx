@@ -100,18 +100,11 @@ export default async function PartyPage({ params }: { params: Promise<{ slug: st
             </div>
 
             {isOwner && (
-              <div className="border-t pt-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Share Your Party</h2>
-                <div className="flex space-x-3">
-                  <input
-                    type="text"
-                    value={inviteUrl}
-                    readOnly
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
-                  />
-                  <ShareButton url={inviteUrl} title={party.title} />
-                </div>
-              </div>
+              <PartyActions
+                partyId={party.id}
+                inviteUrl={inviteUrl}
+                title={party.title}
+              />
             )}
           </div>
 
