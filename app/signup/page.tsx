@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import Footer from '@/components/Footer'
 
 export default function SignupPage() {
   const [email, setEmail] = useState('')
@@ -39,8 +40,8 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-500 to-pink-500 px-4">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-500 to-pink-500 px-4 py-8">
+      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 mb-8">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">🎉 InstaParty</h1>
           <p className="text-gray-600">Create your account</p>
@@ -118,6 +119,8 @@ export default function SignupPage() {
           </p>
         </div>
       </div>
+
+      <Footer />
     </div>
   )
 }
