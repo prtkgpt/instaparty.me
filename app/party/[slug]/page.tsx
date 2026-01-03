@@ -10,6 +10,7 @@ import DeletePartyButton from '@/components/DeletePartyButton'
 import PotluckList from '@/components/PotluckList'
 import CohostManagement from '@/components/CohostManagement'
 import PhotoGallery from '@/components/PhotoGallery'
+import SpotifyPlaylist from '@/components/SpotifyPlaylist'
 
 export default async function PartyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -181,6 +182,17 @@ export default async function PartyPage({ params }: { params: Promise<{ slug: st
               <PotluckList partyId={party.id} isOwner={canManage} />
             </div>
           )}
+
+          {/* Spotify Playlist */}
+          <div className="mb-6">
+            <SpotifyPlaylist
+              partyId={party.id}
+              playlistId={party.spotify_playlist_id}
+              playlistUrl={party.spotify_playlist_url}
+              playlistName={party.spotify_playlist_name}
+              canManage={canManage}
+            />
+          </div>
 
           {/* Photo Gallery - visible to everyone */}
           <div className="mb-6">

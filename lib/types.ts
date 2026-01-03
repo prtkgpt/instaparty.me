@@ -16,6 +16,9 @@ export interface Party {
   charity_name: string | null
   charity_url: string | null
   charity_message: string | null
+  spotify_playlist_id: string | null
+  spotify_playlist_url: string | null
+  spotify_playlist_name: string | null
 }
 
 export type RSVPStatus = 'pending' | 'yes' | 'no' | 'maybe'

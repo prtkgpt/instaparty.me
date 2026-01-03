@@ -9,6 +9,7 @@ import { format } from 'date-fns'
 import { getTheme } from '@/lib/themes'
 import PotluckList from '@/components/PotluckList'
 import PhotoGallery from '@/components/PhotoGallery'
+import SpotifyPlaylist from '@/components/SpotifyPlaylist'
 
 export default function InvitePage() {
   const params = useParams()
@@ -312,6 +313,15 @@ export default function InvitePage() {
         {party.has_potluck && (
           <PotluckList partyId={party.id} isOwner={false} />
         )}
+
+        {/* Spotify Playlist */}
+        <SpotifyPlaylist
+          partyId={party.id}
+          playlistId={party.spotify_playlist_id}
+          playlistUrl={party.spotify_playlist_url}
+          playlistName={party.spotify_playlist_name}
+          canManage={false}
+        />
 
         {/* Photo Gallery */}
         <PhotoGallery partyId={party.id} partySlug={slug} canManage={false} />
