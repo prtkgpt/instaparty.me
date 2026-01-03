@@ -20,6 +20,11 @@ export default function CreatePartyPage() {
   const [charityName, setCharityName] = useState('')
   const [charityUrl, setCharityUrl] = useState('')
   const [charityMessage, setCharityMessage] = useState('')
+  const [enableReminders, setEnableReminders] = useState(true)
+  const [send24hBefore, setSend24hBefore] = useState(true)
+  const [send2hBefore, setSend2hBefore] = useState(true)
+  const [sendDayAfter, setSendDayAfter] = useState(false)
+  const [reminderMessage, setReminderMessage] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -66,6 +71,18 @@ export default function CreatePartyPage() {
         setError(insertError.message)
         setLoading(false)
         return
+      }
+
+      // Create reminder settings
+      if (data && enableReminders) {
+        await supabase.from('party_reminder_settings').insert({
+          party_id: data.id,
+          send_24h_before: send24hBefore,
+          send_2h_before: send2hBefore,
+          send_day_after: sendDayAfter,
+          custom_message: reminderMessage || null,
+          reminder_enabled: enableReminders,
+        })
       }
 
       router.push(`/party/${slug}`)
@@ -254,6 +271,85 @@ export default function CreatePartyPage() {
                     placeholder="In lieu of gifts, please consider donating to..."
                   />
                 </div>
+              </div>
+            </div>
+
+            {/* Automated Reminders Section */}
+            <div className="border border-gray-200 rounded-lg p-4 bg-amber-50">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">⏰ Automated Reminders</h3>
+              <p className="text-sm text-gray-600 mb-4">
+                Automatically send email reminders to your guests
+              </p>
+
+              <div className="space-y-3">
+                <div className="flex items-center">
+                  <input
+                    id="enableReminders"
+                    type="checkbox"
+                    checked={enableReminders}
+                    onChange={(e) => setEnableReminders(e.target.checked)}
+                    className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                  />
+                  <label htmlFor="enableReminders" className="ml-2 block text-sm font-semibold text-gray-700">
+                    Enable automated reminders
+                  </label>
+                </div>
+
+                {enableReminders && (
+                  <div className="ml-6 space-y-2 border-l-2 border-amber-300 pl-4">
+                    <div className="flex items-center">
+                      <input
+                        id="send24hBefore"
+                        type="checkbox"
+                        checked={send24hBefore}
+                        onChange={(e) => setSend24hBefore(e.target.checked)}
+                        className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                      />
+                      <label htmlFor="send24hBefore" className="ml-2 block text-sm text-gray-700">
+                        Send reminder 24 hours before the party
+                      </label>
+                    </div>
+
+                    <div className="flex items-center">
+                      <input
+                        id="send2hBefore"
+                        type="checkbox"
+                        checked={send2hBefore}
+                        onChange={(e) => setSend2hBefore(e.target.checked)}
+                        className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                      />
+                      <label htmlFor="send2hBefore" className="ml-2 block text-sm text-gray-700">
+                        Send reminder 2 hours before the party
+                      </label>
+                    </div>
+
+                    <div className="flex items-center">
+                      <input
+                        id="sendDayAfter"
+                        type="checkbox"
+                        checked={sendDayAfter}
+                        onChange={(e) => setSendDayAfter(e.target.checked)}
+                        className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                      />
+                      <label htmlFor="sendDayAfter" className="ml-2 block text-sm text-gray-700">
+                        Send thank you email the day after
+                      </label>
+                    </div>
+
+                    <div className="mt-3">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Custom Reminder Message (Optional)
+                      </label>
+                      <textarea
+                        value={reminderMessage}
+                        onChange={(e) => setReminderMessage(e.target.value)}
+                        rows={2}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900"
+                        placeholder="Don't forget to bring your dancing shoes!"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
