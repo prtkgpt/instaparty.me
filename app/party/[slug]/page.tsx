@@ -12,6 +12,8 @@ import CohostManagement from '@/components/CohostManagement'
 import PhotoGallery from '@/components/PhotoGallery'
 import SpotifyPlaylist from '@/components/SpotifyPlaylist'
 import AddToCalendar from '@/components/AddToCalendar'
+import QRCodeDisplay from '@/components/QRCodeDisplay'
+import GuestMessaging from '@/components/GuestMessaging'
 
 export default async function PartyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -145,6 +147,13 @@ export default async function PartyPage({ params }: { params: Promise<{ slug: st
               <AddToCalendar party={party} inviteUrl={inviteUrl} />
             </div>
 
+            {/* QR Code - visible to managers */}
+            {canManage && (
+              <div className="mb-6">
+                <QRCodeDisplay url={inviteUrl} title={party.title} />
+              </div>
+            )}
+
             {canManage && (
               <PartyActions
                 partyId={party.id}
@@ -172,6 +181,13 @@ export default async function PartyPage({ params }: { params: Promise<{ slug: st
               </div>
 
               <RSVPList invites={invites || []} />
+            </div>
+          )}
+
+          {/* Guest Messaging - For owners and cohosts */}
+          {canManage && (
+            <div className="mb-6">
+              <GuestMessaging partyId={party.id} canManage={canManage} />
             </div>
           )}
 
