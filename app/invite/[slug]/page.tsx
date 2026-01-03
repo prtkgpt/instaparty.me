@@ -10,6 +10,7 @@ import { getTheme } from '@/lib/themes'
 import PotluckList from '@/components/PotluckList'
 import PhotoGallery from '@/components/PhotoGallery'
 import SpotifyPlaylist from '@/components/SpotifyPlaylist'
+import AddToCalendar from '@/components/AddToCalendar'
 
 export default function InvitePage() {
   const params = useParams()
@@ -155,6 +156,11 @@ export default function InvitePage() {
                 </div>
               </div>
             )}
+          </div>
+
+          {/* Add to Calendar Button */}
+          <div className="mt-4">
+            <AddToCalendar party={party} inviteUrl={`${window.location.origin}/invite/${slug}`} />
           </div>
         </div>
 

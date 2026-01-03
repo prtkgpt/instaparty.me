@@ -11,6 +11,7 @@ import PotluckList from '@/components/PotluckList'
 import CohostManagement from '@/components/CohostManagement'
 import PhotoGallery from '@/components/PhotoGallery'
 import SpotifyPlaylist from '@/components/SpotifyPlaylist'
+import AddToCalendar from '@/components/AddToCalendar'
 
 export default async function PartyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -137,6 +138,11 @@ export default async function PartyPage({ params }: { params: Promise<{ slug: st
                   </div>
                 </div>
               )}
+            </div>
+
+            {/* Add to Calendar - visible to everyone */}
+            <div className="mb-6">
+              <AddToCalendar party={party} inviteUrl={inviteUrl} />
             </div>
 
             {canManage && (
