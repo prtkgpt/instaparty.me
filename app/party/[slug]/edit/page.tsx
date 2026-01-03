@@ -24,6 +24,9 @@ export default function EditPartyPage() {
   const [isPublic, setIsPublic] = useState(true)
   const [hasPotluck, setHasPotluck] = useState(false)
   const [theme, setTheme] = useState('classic')
+  const [charityName, setCharityName] = useState('')
+  const [charityUrl, setCharityUrl] = useState('')
+  const [charityMessage, setCharityMessage] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -65,6 +68,9 @@ export default function EditPartyPage() {
       setIsPublic(partyData.is_public)
       setHasPotluck(partyData.has_potluck || false)
       setTheme(partyData.theme || 'classic')
+      setCharityName(partyData.charity_name || '')
+      setCharityUrl(partyData.charity_url || '')
+      setCharityMessage(partyData.charity_message || '')
       setLoading(false)
     }
 
@@ -96,6 +102,9 @@ export default function EditPartyPage() {
           is_public: isPublic,
           has_potluck: hasPotluck,
           theme,
+          charity_name: charityName || null,
+          charity_url: charityUrl || null,
+          charity_message: charityMessage || null,
         })
         .eq('id', party.id)
 
@@ -250,6 +259,55 @@ export default function EditPartyPage() {
                     <div className="text-xs text-gray-500 mt-1">{t.description}</div>
                   </button>
                 ))}
+              </div>
+            </div>
+
+            {/* Charity Donation Section */}
+            <div className="border border-gray-200 rounded-lg p-4 bg-blue-50">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">💝 Charity Donations (Optional)</h3>
+              <p className="text-sm text-gray-600 mb-4">
+                Instead of gifts, ask your guests to donate to a charity of your choice
+              </p>
+
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Charity Name
+                  </label>
+                  <input
+                    type="text"
+                    value={charityName}
+                    onChange={(e) => setCharityName(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900"
+                    placeholder="e.g., Red Cross, UNICEF, Local Food Bank"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Donation Link (URL)
+                  </label>
+                  <input
+                    type="url"
+                    value={charityUrl}
+                    onChange={(e) => setCharityUrl(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900"
+                    placeholder="https://charity.org/donate"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Message to Guests
+                  </label>
+                  <textarea
+                    value={charityMessage}
+                    onChange={(e) => setCharityMessage(e.target.value)}
+                    rows={3}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900"
+                    placeholder="In lieu of gifts, please consider donating to..."
+                  />
+                </div>
               </div>
             </div>
 

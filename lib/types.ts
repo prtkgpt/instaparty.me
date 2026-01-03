@@ -13,6 +13,9 @@ export interface Party {
   is_public: boolean
   theme: string
   has_potluck: boolean
+  charity_name: string | null
+  charity_url: string | null
+  charity_message: string | null
 }
 
 export type RSVPStatus = 'pending' | 'yes' | 'no' | 'maybe'

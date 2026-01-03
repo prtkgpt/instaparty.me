@@ -157,6 +157,35 @@ export default function InvitePage() {
           </div>
         </div>
 
+        {/* Charity Donation Section */}
+        {party.charity_name && (
+          <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl shadow-xl p-8 mb-6 border-2 border-blue-200">
+            <div className="flex items-start space-x-3 mb-4">
+              <span className="text-4xl">💝</span>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">In Lieu of Gifts</h2>
+                <p className="text-gray-700">
+                  {party.charity_message || `Instead of gifts, please consider donating to ${party.charity_name}`}
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg p-4 mt-4">
+              <p className="text-lg font-semibold text-gray-900 mb-2">{party.charity_name}</p>
+              {party.charity_url && (
+                <a
+                  href={party.charity_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all shadow-md"
+                >
+                  🎁 Donate Now
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">RSVP</h2>
 
