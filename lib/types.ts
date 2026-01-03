@@ -68,6 +68,18 @@ export interface PartyCohost {
   profiles?: Profile
 }
 
+export interface PartyPhoto {
+  id: string
+  created_at: string
+  party_id: string
+  uploaded_by_name: string
+  uploaded_by_email: string | null
+  file_path: string
+  file_name: string
+  caption: string | null
+  likes: number
+}
+
 export interface PartyWithInvites extends Party {
   invites?: Invite[]
   profiles?: Profile

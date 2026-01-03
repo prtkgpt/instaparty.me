@@ -8,6 +8,7 @@ import { Party, RSVPStatus } from '@/lib/types'
 import { format } from 'date-fns'
 import { getTheme } from '@/lib/themes'
 import PotluckList from '@/components/PotluckList'
+import PhotoGallery from '@/components/PhotoGallery'
 
 export default function InvitePage() {
   const params = useParams()
@@ -282,6 +283,9 @@ export default function InvitePage() {
         {party.has_potluck && (
           <PotluckList partyId={party.id} isOwner={false} />
         )}
+
+        {/* Photo Gallery */}
+        <PhotoGallery partyId={party.id} partySlug={slug} canManage={false} />
       </div>
     </div>
   )

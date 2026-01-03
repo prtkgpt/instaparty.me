@@ -9,6 +9,7 @@ import PartyComments from '@/components/PartyComments'
 import DeletePartyButton from '@/components/DeletePartyButton'
 import PotluckList from '@/components/PotluckList'
 import CohostManagement from '@/components/CohostManagement'
+import PhotoGallery from '@/components/PhotoGallery'
 
 export default async function PartyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -180,6 +181,11 @@ export default async function PartyPage({ params }: { params: Promise<{ slug: st
               <PotluckList partyId={party.id} isOwner={canManage} />
             </div>
           )}
+
+          {/* Photo Gallery - visible to everyone */}
+          <div className="mb-6">
+            <PhotoGallery partyId={party.id} partySlug={slug} canManage={canManage} />
+          </div>
 
           {/* Comments section - visible to everyone */}
           <PartyComments partyId={party.id} isOwner={canManage} />
